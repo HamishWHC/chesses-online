@@ -1,0 +1,84 @@
+.title {
+    font-size: 1.5em;
+    letter-spacing: 1em;
+    line-height: 2em;
+    text-align: center;
+    color: yellow;
+    padding-left: 1em;
+}
+
+.header {
+    padding: 2em 0;
+}
+
+.footer {
+    color: yellow;
+    text-align: center;
+    line-height: 3em;
+    padding: 3em 5em;
+}
+
+.footer a {
+    color: yellow;
+}
+
+.menu-item:hover {
+    color: black;
+    background-color: white;
+}
+
+.menu-item {
+    padding-left: 1em;
+    font-size: 1.5em;
+    letter-spacing: 1em;
+    line-height: 2em;
+    text-align: center;
+}
+
+.join-input {
+    background-color: white;
+    color: black;
+    font-size: 1.5em;
+    font-family: inherit;
+    letter-spacing: 0.25em;
+    border: none;
+    outline: none;
+    width: 100%;
+    line-height: 2em;
+    padding: 0;
+    text-indent: 0.5em;
+}
+
+.join-button {
+    font-size: 1.5em;
+    letter-spacing: 0.25em;
+    line-height: 2em;
+    text-align: center;
+    padding-left: 0.5em;
+    padding-right: 0.25em;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
+.join-button:hover {
+    color: white;
+    background-color: black;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+}
+
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+    }
+}

@@ -1,41 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import {Route, RouteComponentProps, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import './App.css';
+import {gameModes} from './game/index';
+import type {Game} from './game/base';
+import {Home} from './Home';
+import {Lobby, LobbyClient, LobbyHost} from './lobby';
+import {GameUi} from './GameUi';
 
-interface AppProps {}
+const App = () => {
+    const [lobby, setLobby] = React.useState<Lobby | null>(null)
+    const history = useHistory()
+    const newGameMatch = useRouteMatch<{mode: string}>("/new/:mode")
+    const joinGameMatch = useRouteMatch<{code: string}>("/game/:code")
+    const newGameUrl = newGameMatch?.url || null
+    const joinGameUrl = joinGameMatch?.url || null
 
-function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
-  );
+    React.useEffect(() => {
+        if (newGameMatch?.isExact) {
+            const mode = gameModes[newGameMatch.params.mode.toUpperCase()]
+            if (mode) {
+                const game: Game = new mode()
+                const lobby = new LobbyHost(game)
+                setLobby(lobby)
+                lobby.events.once("id", id => history.replace(`/game/${id}`))
+
+                console.log(lobby)
+            } else {
+                history.push("/")
+            }
+        }
+    }, [newGameUrl])
+
+    React.useEffect(() => {
+        if (joinGameMatch?.isExact && !lobby) {
+            const lobby = new LobbyClient(joinGameMatch.params.code)
+            setLobby(lobby)
+        }
+    }, [joinGameUrl])
+
+    return <Switch>
+        <Route path="/" exact>
+            <Home />
+        </Route>
+        <Route path="/new/:mode" exact>
+            <div>Creating Game...</div>
+        </Route>
+        <Route path="/game/:code" exact>
+            {lobby ? <GameUi lobby={lobby} /> : <div>Joining Game...</div>}
+        </Route>
+    </Switch>;
 }
 
 export default App;
