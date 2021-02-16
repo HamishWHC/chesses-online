@@ -1,11 +1,13 @@
 import React from 'react';
-import {Route, RouteComponentProps, Switch, useHistory, useRouteMatch} from 'react-router-dom';
+import {Route, Switch, useHistory, useRouteMatch} from 'react-router-dom';
 import './App.css';
 import {gameModes} from './game/index';
 import type {Game} from './game/base';
 import {Home} from './Home';
-import {Lobby, LobbyClient, LobbyHost} from './lobby';
-import {GameUi} from './GameUi';
+import {LobbyUi} from './LobbyUi';
+import type {Lobby} from './lobby/base';
+import {LobbyClient} from './lobby/client';
+import {LobbyHost} from './lobby/host';
 
 const App = () => {
     const [lobby, setLobby] = React.useState<Lobby | null>(null)
@@ -22,9 +24,7 @@ const App = () => {
                 const game: Game = new mode()
                 const lobby = new LobbyHost(game)
                 setLobby(lobby)
-                lobby.events.once("id", id => history.replace(`/game/${id}`))
-
-                console.log(lobby)
+                lobby.events.once("establishedLobbyId", id => history.replace(`/game/${id}`))
             } else {
                 history.push("/")
             }
@@ -46,7 +46,7 @@ const App = () => {
             <div>Creating Game...</div>
         </Route>
         <Route path="/game/:code" exact>
-            {lobby ? <GameUi lobby={lobby} /> : <div>Joining Game...</div>}
+            {lobby ? <LobbyUi lobby={lobby} /> : <div>Joining Game...</div>}
         </Route>
     </Switch>;
 }

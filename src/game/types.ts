@@ -9,7 +9,7 @@ export enum PieceType {
     PAWN
 }
 
-export type Position = {r: number, f: number}
+export type Position = {x: number, y: number}
 export type Move = {start: Position, end: Position}
 
 export enum Side {
@@ -17,7 +17,7 @@ export enum Side {
     BLACK
 }
 
-export type Piece = {side: Side, piece: PieceType}
+export type Piece = {side: Side, type: PieceType}
 
 // export enum GameMode {
 //     NORMAL = "NORMAL",

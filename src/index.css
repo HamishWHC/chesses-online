@@ -1,6 +1,6 @@
 @font-face {
     font-family: Vera;
-    src: url('./VeraMoBd.ttf');
+    src: url('/VeraMoBd.ttf');
 }
 
 body {

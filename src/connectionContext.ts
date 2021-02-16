@@ -1,3 +1,0 @@
-const useConnection = (id?: string) => {
-    
-}
